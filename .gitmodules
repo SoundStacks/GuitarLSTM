@@ -1,3 +1,6 @@
 [submodule "cmajor"]
 	path = cmajor
 	url = git@github.com:SoundStacks/cmajor.git
+[submodule "RTNeural"]
+	path = RTNeural
+	url = git@github.com:jatinchowdhury18/RTNeural.git

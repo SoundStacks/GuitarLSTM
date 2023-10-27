@@ -9,6 +9,9 @@ from tensorflow.keras.activations import tanh, elu, relu
 from tensorflow.keras.models import load_model
 import tensorflow.keras.backend as K
 from tensorflow.keras.utils import Sequence
+
+import sys
+sys.path.append ("RTNeural/python")
 from model_utils import save_model
 
 import os
