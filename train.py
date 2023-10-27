@@ -182,7 +182,7 @@ def main(args):
     dset[0] = input_size
     f.close()
     save_model (model, f"models/{name}/rt.json")
-    os.system (f"rtneural/rtneuralToCmajor.py --model models/{name}/rt.json --output models/{name}/patch")
+    os.system (f"cmajor/tools/rtneural/rtneuralToCmajor.py --model models/{name}/rt.json --output models/{name}/patch")
 
     # Create Analysis Plots ###########################################
     if args.create_plots == 1:

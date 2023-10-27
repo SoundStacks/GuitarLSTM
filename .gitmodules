@@ -1,0 +1,3 @@
+[submodule "cmajor"]
+	path = cmajor
+	url = git@github.com:SoundStacks/cmajor.git
