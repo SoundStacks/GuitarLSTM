@@ -9,6 +9,8 @@ from tensorflow.keras.activations import tanh, elu, relu
 from tensorflow.keras.models import load_model
 import tensorflow.keras.backend as K
 from tensorflow.keras.utils import Sequence
+import tf2onnx
+import onnx
 
 import sys
 sys.path.append ("RTNeural/python")
@@ -142,9 +144,6 @@ def main(args):
             # Train Model ###################################################
             model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=0.2)
 
-
-        model.save('models/'+name+'/'+name+'.h5')
-
     # If training on the full set of input data in one run, do this part
     else:
         y_ordered = y_all[input_size-1:]
@@ -159,7 +158,8 @@ def main(args):
         # Train Model ###################################################
         model.fit(X_random,y_random, epochs=epochs, batch_size=batch_size, validation_split=test_size)
 
-        model.save('models/'+name+'/'+name+'.h5')
+    # Save the model
+    model.save('models/'+name+'/'+name+'.h5')
 
     # Run Prediction #################################################
     print("Running prediction..")
@@ -185,7 +185,11 @@ def main(args):
     dset[0] = input_size
     f.close()
     save_model (model, f"models/{name}/rt.json")
-    os.system (f"cmajor/tools/rtneural/rtneuralToCmajor.py --model models/{name}/rt.json --output models/{name}/patch")
+    os.system (f"cmajor/tools/rtneural/rtneuralToCmajor.py --model models/{name}/rt.json --output models/{name}/rt")
+
+    onnx_model, _ = tf2onnx.convert.from_keras(model)
+    onnx.save(onnx_model, f"models/{name}/{name}.onnx")
+    os.system (f"cmajor/tools/onnx/onnxToCmajor.py --model models/{name}/{name}.onnx --patchDir models/{name}/onnx")
 
     # Create Analysis Plots ###########################################
     if args.create_plots == 1:
